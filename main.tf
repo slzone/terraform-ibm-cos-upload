@@ -13,7 +13,8 @@ resource "null_resource" "upload_to_cos" {
       COS_SERVICE_CRN = var.cos_crn
       ENDPOINT        = var.endpoint
       BUCKET          = var.bucket_name
-      PATH            = var.path
+      CLOUDTKEFILES   = var.tke_files_path
+      HPCS_GUID       = var.hpcs_instance_guid
     }
   }
 }
