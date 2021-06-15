@@ -22,7 +22,7 @@ variable "bucket_name" {
   description = "COS bucket name"
 }
 # Path to which CLOUDTKEFILES has to be exported
-variable "path" {
+variable "tke_files_path" {
   type        = string
   description = "Path at which the files are located"
 }
