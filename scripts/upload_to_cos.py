@@ -1,4 +1,5 @@
 from packages import object_storage as object_storage
+from packages import custom as custom
 import time
 import shutil
 import os
@@ -8,23 +9,13 @@ cos_service_crn = os.environ.get("COS_SERVICE_CRN","")
 endpoint = os.environ.get("ENDPOINT","")
 bucket_name = os.environ.get("BUCKET","")
 
-path = os.environ.get("PATH","")
+tke_files_path = os.environ.get("CLOUDTKEFILES","")
+hpcs_guid = os.environ.get("HPCS_GUID","")
 
-if os.path.isdir(path):
+resultDir = custom.custom_tke_files_path(tke_files_path,hpcs_guid)
 
-	foldername = os.path.basename(path)
-	zip_file_name = str(foldername + "_" + time.strftime("%y%m%d%S%H%M%S"))
-	filepath = shutil.make_archive(zip_file_name, 'zip', path)
-	upload_file_name = zip_file_name
+zip_file_name =str(time.strftime("%y%m%d%S%H%M%S"))+"_"+hpcs_guid+"_tkefiles"
+zip_file_path = shutil.make_archive(zip_file_name, 'zip', resultDir)
 
-elif os.path.isfile(path):
 
-	_, tail = os.path.split(path)
-	filepath = path
-	upload_file_name = tail
-
-else:  
-  print("It is a special file (socket, FIFO, device file)" )
-  exit(1)
-
-object_storage.upload_file_cos(api_key, cos_service_crn, endpoint, bucket_name, path, zip_file_name)
+object_storage.upload_file_cos(api_key,cos_service_crn,endpoint,bucket_name,zip_file_path,zip_file_name)
